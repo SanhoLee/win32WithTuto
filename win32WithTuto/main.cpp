@@ -104,7 +104,7 @@ void AddMenus(HWND hWnd)
 	HMENU hFileMenu = CreateMenu();
 	HMENU hSubMenu = CreateMenu();
 
-	AppendMenu(hSubMenu, MF_STRING, CHANGE_TITLE, L"Change Title");
+	AppendMenu(hSubMenu, MF_STRING, NULL, L"SubMenu Item");
 
 	
 	// submenu for "FILE" menu.
@@ -157,4 +157,16 @@ void AddControls(HWND hWnd)
 		NULL,NULL,NULL
 	);
 
+
+	// Button Control.
+	CreateWindowW(
+		L"Button",
+		L"Change Title",
+		WS_VISIBLE | WS_CHILD,
+		200, 204,
+		100, 50,
+		hWnd,
+		(HMENU)CHANGE_TITLE, 
+		NULL, NULL
+	);
 }
