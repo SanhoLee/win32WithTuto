@@ -10,9 +10,11 @@
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 void AddMenus(HWND);
 void AddControls(HWND);
+void loadImage();
 
-HWND hName, hAge, hOut;
+HWND hName, hAge, hOut, hLogo;
 HMENU hMenu;
+HBITMAP hLogoImage, hGeneraeImage;
 
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR args, int nCmdShow) {
@@ -95,6 +97,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		break;
 
 	case WM_CREATE:
+		loadImage();
 		AddMenus(hWnd);
 		AddControls(hWnd);
 		break;
@@ -148,10 +151,36 @@ void AddControls(HWND hWnd)
 	CreateWindowW(L"static", L"Age : ", WS_VISIBLE | WS_CHILD, 100, 90, 98, 38, hWnd, NULL, NULL, NULL);
 	hAge = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER, 200, 90, 98, 38, hWnd, NULL, NULL, NULL);
 
-	CreateWindowW(L"button", L"Generate", WS_VISIBLE | WS_CHILD, 150, 140, 98, 38, hWnd, (HMENU)GENERATE_BUTTON, NULL, NULL);
+	HWND hBtn = CreateWindowW(L"button", NULL, WS_VISIBLE | WS_CHILD | BS_BITMAP, 150, 140, 98, 38, hWnd, (HMENU)GENERATE_BUTTON, NULL, NULL);
+	SendMessageW(hBtn, BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hGeneraeImage);
 
 	// Output TextBox.
 	hOut = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER, 100, 200, 300, 200, hWnd, NULL, NULL, NULL);
 
+	// logo image.
+	hLogo = CreateWindowW(L"static", NULL, WS_VISIBLE | WS_CHILD | SS_BITMAP, 350, 60, 100, 100, hWnd, NULL, NULL, NULL);
+	// STM : static Message.
+	SendMessageW(hLogo, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hLogoImage);
 
+}
+
+
+// doesn'work for loading img...
+// file path has something wrong.
+void loadImage() {
+	hLogoImage = (HBITMAP)LoadImageW(
+		NULL,
+		L"tire1.bmp",
+		IMAGE_BITMAP,
+		100,100,
+		LR_LOADFROMFILE
+		);
+
+	hGeneraeImage = (HBITMAP)LoadImageW(
+		NULL,
+		L"tire-footprints.bmp",
+		IMAGE_BITMAP,
+		98, 38,
+		LR_LOADFROMFILE
+	);
 }
